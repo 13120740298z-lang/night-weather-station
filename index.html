@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夜班气象站 · 目录</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #F7F0DD;
+    font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+    min-height: 100vh;
+    color: #1B2A49;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(27,42,73,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 85% 80%, rgba(245,197,99,0.05) 0%, transparent 50%);
+  }
+  .wrapper { max-width: 640px; margin: 0 auto; padding: 60px 24px 100px; }
+  .header { text-align: center; margin-bottom: 64px; }
+  .header .series-title { font-size: 12px; letter-spacing: 10px; color: #7A7D82; margin-bottom: 16px; }
+  .header .title { font-size: 56px; font-weight: 700; color: #1B2A49; letter-spacing: 6px; margin-bottom: 12px; }
+  .header .tagline { font-size: 15px; color: #B89968; letter-spacing: 4px; }
+  .header .divider { width: 80px; height: 1px; background: #B89968; margin: 32px auto; position: relative; }
+  .header .divider::before { content: ''; position: absolute; top: -2px; left: 50%; width: 6px; height: 6px; background: #B89968; border-radius: 50%; transform: translateX(-50%); }
+
+  .series-meta { text-align: center; margin-bottom: 48px; font-size: 12px; color: #7A7D82; letter-spacing: 2px; line-height: 2; }
+  .series-meta strong { color: #1B2A49; }
+
+  .volume-card {
+    display: block;
+    background: #FDF9EE;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 16px rgba(27,42,73,0.05);
+    border: 1px solid rgba(184,153,104,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .volume-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(27,42,73,0.12);
+    border-color: #B89968;
+  }
+  .volume-card .card-inner { display: flex; align-items: center; gap: 20px; }
+  .cover-block {
+    width: 72px; height: 96px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: rgba(255,255,255,0.9);
+    box-shadow: inset 0 -4px 10px rgba(0,0,0,0.1);
+  }
+  .vol-info { flex: 1; min-width: 0; }
+  .vol-num { font-size: 11px; letter-spacing: 4px; color: #B89968; margin-bottom: 6px; }
+  .vol-title { font-size: 20px; font-weight: 700; color: #1B2A49; margin-bottom: 8px; letter-spacing: 2px; }
+  .vol-梗概 { font-size: 13px; color: #5A6B82; line-height: 1.7; }
+  .vol-arrow { color: #B89968; font-size: 18px; flex-shrink: 0; }
+
+  /* 封面色块 */
+  .cv1 { background: linear-gradient(135deg, #1B2A49 0%, #3A4F7A 100%); }
+  .cv2 { background: linear-gradient(135deg, #1B2A49 0%, #4A5F8A 70%, #F5C563 100%); }
+  .cv3 { background: linear-gradient(135deg, #8B4A3B 0%, #B89968 100%); }
+  .cv4 { background: linear-gradient(135deg, #7A7D82 0%, #A89E8C 100%); }
+  .cv5 { background: linear-gradient(135deg, #5A5D62 0%, #9A9D92 100%); }
+  .cv6 { background: linear-gradient(135deg, #7A7D82 0%, #F5C563 60%, #D94F70 100%); }
+  .cv7 { background: linear-gradient(135deg, #2E3440 0%, #5A5D62 100%); }
+  .cv8 { background: linear-gradient(135deg, #1B2A49 0%, #5A5D62 100%); }
+  .cv9 { background: linear-gradient(135deg, #1B2A49 0%, #F5C563 100%); }
+  .cv10 { background: linear-gradient(135deg, #2E3440 0%, #7A7D82 100%); }
+  .cv11 { background: linear-gradient(135deg, #1B2A49 0%, #8A7B5E 100%); }
+  .cv12 { background: linear-gradient(135deg, #2E3440 0%, #5A5D62 100%); }
+  .cv13 { background: linear-gradient(135deg, #2E3440 0%, #4A5F8A 100%); }
+  .cv14 { background: linear-gradient(135deg, #1B2A49 0%, #8B4A3B 100%); }
+  .cv15 { background: linear-gradient(135deg, #D94F70 0%, #F5C563 100%); }
+  .cv16 { background: linear-gradient(135deg, #1B2A49 0%, #8A7B5E 100%); }
+  .cv17 { background: linear-gradient(135deg, #2E3440 0%, #5A5D62 100%); }
+  .cv18 { background: linear-gradient(135deg, #2E3440 0%, #4A5F8A 100%); }
+  .cv19 { background: linear-gradient(135deg, #1B2A49 0%, #8B4A3B 100%); }
+  .cv20 { background: linear-gradient(135deg, #D94F70 0%, #F5C563 100%); }
+  .cv21 { background: linear-gradient(135deg, #1B2A49 0%, #F5C563 100%); }
+  .cv22 { background: linear-gradient(135deg, #2E3440 0%, #D94F70 100%); }
+  .cv23 { background: linear-gradient(135deg, #7A7D82 0%, #3A4F7A 100%); }
+  .cv24 { background: linear-gradient(135deg, #F5C563 0%, #D94F70 100%); }
+  .cv25 { background: linear-gradient(135deg, #2E3440 0%, #8A7B5E 100%); }
+  .cv26 { background: linear-gradient(135deg, #1B2A49 0%, #4A5F8A 60%, #F5C563 100%); }
+  .cv27 { background: linear-gradient(135deg, #2E3440 0%, #7A7D82 100%); }
+  .cv28 { background: linear-gradient(135deg, #1B2A49 0%, #B89968 100%); }
+  .cv29 { background: linear-gradient(135deg, #8B4A3B 0%, #F5C563 100%); }
+  .cv30 { background: linear-gradient(135deg, #2E3440 0%, #3A4F7A 60%, #D94F70 100%); }
+  .cv31 { background: linear-gradient(135deg, #D94F70 0%, #F5C563 50%, #4A90D9 100%); }
+  .cv32 { background: linear-gradient(135deg, #7A7D82 0%, #2E3440 100%); }
+  .cv33 { background: linear-gradient(135deg, #8B4A3B 0%, #D94F70 100%); }
+  .cv34 { background: linear-gradient(135deg, #1B2A49 0%, #D94F70 60%, #F5C563 100%); }
+  .cv35 { background: linear-gradient(135deg, #D94F70 0%, #F5C563 40%, #4A90D9 70%, #5CB85C 100%); }
+  .cv36 { background: linear-gradient(135deg, #2E3440 0%, #7A7D82 65%, #F5C563 100%); }
+  .cv37 { background: linear-gradient(135deg, #1B2A49 0%, #3A4F7A 60%, #F5C563 100%); }
+  .cv38 { background: linear-gradient(135deg, #1B2A49 0%, #7A7D82 55%, #F5C563 100%); }
+  .cv39 { background: linear-gradient(135deg, #8B4A3B 0%, #2E3440 100%); }
+  .cv40 { background: linear-gradient(135deg, #1B2A49 0%, #F5C563 50%, #4A90D9 100%); }
+  .cv41 { background: linear-gradient(135deg, #7A7D82 0%, #7A7D82 50%, #1B2A49 50%, #1B2A49 100%); }
+  .cv42 { background: linear-gradient(135deg, #D94F70 0%, #F5C563 30%, #5CB85C 60%, #4A90D9 100%); }
+  .cv43 { background: linear-gradient(135deg, #F5C563 0%, #D94F70 35%, #4A90D9 70%, #8B4A3B 100%); }
+  .cv44 { background: linear-gradient(135deg, #2E3440 0%, #7A7D82 60%, #D94F70 100%); }
+  .cv45 { background: linear-gradient(135deg, #1B2A49 0%, #F5C563 45%, #D94F70 75%, #4A90D9 100%); }
+  .cv46 { background: linear-gradient(135deg, #4A90D9 0%, #F7F0DD 55%, #F5C563 100%); }
+  .cv47 { background: linear-gradient(135deg, #7A7D82 0%, #1B2A49 65%, #F5C563 100%); }
+  .cv48 { background: linear-gradient(135deg, #1A1A1A 0%, #B89968 55%, #8B4A3B 100%); }
+  .cv49 { background: linear-gradient(135deg, #B89968 0%, #1B2A49 60%, #F7F0DD 100%); }
+  .cv50 { background: linear-gradient(135deg, #1B2A49 0%, #7A7D82 55%, #F5C563 100%); }
+  .cv51 { background: linear-gradient(135deg, #1A1A1A 0%, #8B4A3B 55%, #B89968 100%); }
+  .cv52 { background: linear-gradient(135deg, #1B2A49 0%, #B89968 60%, #F5C563 100%); }
+  .cv53 { background: linear-gradient(135deg, #1B2A49 0%, #7A7D82 65%, #F7F0DD 100%); }
+  .cv54 { background: linear-gradient(135deg, #7A7D82 0%, #B89968 50%, #F5C563 100%); }
+  .cv55 { background: linear-gradient(135deg, #D94F70 0%, #F5C563 35%, #4A90D9 75%, #7A7D82 100%); }
+  .cv56 { background: linear-gradient(135deg, #7A7D82 0%, #5A5D62 55%, #B89968 100%); }
+  .cv57 { background: linear-gradient(135deg, #8B4A3B 0%, #B89968 50%, #F5C563 100%); }
+  .cv58 { background: linear-gradient(135deg, #1B2A49 0%, #3A4F7A 55%, #7A7D82 100%); }
+  .cv59 { background: linear-gradient(135deg, #2E3440 0%, #4A5F8A 60%, #7A7D82 100%); }
+  .cv60 { background: linear-gradient(135deg, #5A5D62 0%, #2E3440 55%, #B89968 100%); }
+  .cv61 { background: linear-gradient(135deg, #5A5D62 0%, #B89968 55%, #F5C563 100%); }
+  .cv62 { background: linear-gradient(135deg, #7A7D82 0%, #F7F0DD 50%, #F5C563 100%); }
+  .cv63 { background: linear-gradient(135deg, #7A7D82 0%, #2E3440 55%, #4A5F8A 100%); }
+  .cv64 { background: linear-gradient(135deg, #2E3440 0%, #4A5F8A 50%, #7A7D82 100%); }
+  .cv65 { background: linear-gradient(135deg, #1B2A49 0%, #F5C563 60%, #F7F0DD 100%); }
+  .cv66 { background: linear-gradient(135deg, #1B2A49 0%, #B89968 55%, #F5C563 100%); }
+  .cv67 { background: linear-gradient(135deg, #2E3440 0%, #7A7D82 55%, #1B2A49 100%); }
+  .cv68 { background: linear-gradient(135deg, #1B2A49 0%, #4A5F8A 50%, #F5C563 100%); }
+  .cv69 { background: linear-gradient(135deg, #1B2A49 0%, #7A7D82 45%, #F7F0DD 100%); }
+  .cv70 { background: linear-gradient(135deg, #2E3440 0%, #4A5F8A 50%, #F5C563 100%); }
+  .cv71 { background: linear-gradient(135deg, #F7F0DD 0%, #F5C563 55%, #B89968 100%); }
+  .cv72 { background: linear-gradient(135deg, #1B2A49 0%, #B89968 45%, #F5C563 100%); }
+  .cv73 { background: linear-gradient(135deg, #8A7B5E 0%, #F5C563 60%, #F7F0DD 100%); }
+  .cv74 { background: linear-gradient(135deg, #8B4A3B 0%, #F5C563 30%, #F7F0DD 55%, #4A5F8A 80%, #1B2A49 100%); }
+  .cv75 { background: linear-gradient(135deg, #F5C563 0%, #D94F70 45%, #4A5F8A 100%); }
+  .cv76 { background: linear-gradient(135deg, #7A7D82 0%, #F7F0DD 60%, #F5C563 100%); }
+  .cv77 { background: linear-gradient(135deg, #7A7D82 0%, #D9C08F 45%, #F7F0DD 100%); }
+  .cv78 { background: linear-gradient(135deg, #1B2A49 0%, #4A5F8A 50%, #F7F0DD 100%); }
+  .cv79 { background: linear-gradient(135deg, #B89968 0%, #F5C563 50%, #F7F0DD 100%); }
+  .cv80 { background: linear-gradient(135deg, #F7F0DD 0%, #F5C563 55%, #1B2A49 100%); }
+
+  .footer { text-align: center; padding: 40px 0; color: #7A7D82; font-size: 11px; letter-spacing: 3px; }
+  .footer hr { border: none; border-top: 1px dashed #B89968; margin: 0 auto 24px; width: 80px; }
+
+  @media (max-width: 480px) {
+    .wrapper { padding: 40px 16px 80px; }
+    .header .title { font-size: 40px; letter-spacing: 4px; }
+    .volume-card { padding: 18px; }
+    .cover-block { width: 60px; height: 80px; font-size: 22px; }
+    .vol-title { font-size: 17px; }
+    .vol-梗概 { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="series-title">ORIGINAL MANHUA · 原创漫画集</div>
+    <h1 class="title">夜班气象站</h1>
+    <div class="tagline">针脚缝的不是云 · 是城市的记忆</div>
+    <div class="divider"></div>
+  </div>
+
+  <div class="series-meta">
+    原创 IP · 暂不对外授权<br>
+    **80 册规划** · 当前已出 **80 册**
+  </div>
+
+  <!-- 第 1 册 -->
+  <a href="volume_01.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv1">01</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 01</div>
+        <div class="vol-title">起</div>
+        <div class="vol-梗概">气象站全貌 → 阿缝缝漏雨云 → 远处出现第一片完美方形灰云（白噪音的钩子）。三格定世界观、主角、反派。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 2 册 -->
+  <a href="volume_02.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv2">02</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 02</div>
+        <div class="vol-title">第一次下班</div>
+        <div class="vol-梗概">阿缝第一次下到地面，趴在屋檐看自己刚缝的雨落到地上。一个小孩举着印彩虹的塑料袋在雨里跑，雷豆电飞了一只麻雀。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 3 册 -->
+  <a href="volume_03.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv3">03</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 03</div>
+        <div class="vol-title">规矩</div>
+        <div class="vol-梗概">站长擦铜气压表，讲气象站的规矩：针脚错三次云归你养。墙上挂满了学徒们养过的云，最老的一片写着"站长初恋那片"。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 4 册 -->
+  <a href="volume_04.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv4">04</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 04</div>
+        <div class="vol-title">拆雾</div>
+        <div class="vol-梗概">阿缝第一次拆雾，站长让她从中间往两边撕，她撕反了方向，把一整片雾拧成了一个巨大的麻花。站长大笑，不生气。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 5 册 -->
+  <a href="volume_05.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv5">05</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 05</div>
+        <div class="vol-title">第一个整齐的阴天</div>
+        <div class="vol-梗概">白噪音第一次正式出现：一条小巷上空被抹成完美灰色阴天，卖花阿姨木然地擦着塑料玫瑰说"今天不晒挺好的"。只有阿缝能看见，那片天不对。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 6 册 -->
+  <a href="volume_06.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv6">06</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 06</div>
+        <div class="vol-title">彩虹边的云</div>
+        <div class="vol-梗概">阿缝缝了一片带彩虹针脚的云想冲破阴天，中学生抬头拍照，五分钟后云被抹平了——白噪音真的能抹掉所有"有差异"的东西。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 7 册 -->
+  <a href="volume_07.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv7">07</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 07</div>
+        <div class="vol-title">天气的尸体</div>
+        <div class="vol-梗概">雷豆带阿缝去城市边缘看被抹平过的云——灰色絮状物像破棉絮飘在废弃楼顶。阿缝伸手碰了一下，缩回来时手凉了好一阵。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 8 册 -->
+  <a href="volume_08.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv8">08</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 08</div>
+        <div class="vol-title">它叫白噪音</div>
+        <div class="vol-梗概">站长第一次说出这个名字。它不是人，是这座城市太久没哭过之后长出来的东西。窗外，阿缝之前缝的漏雨云这次没漏。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 9 册 -->
+  <a href="volume_09.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv9">09</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 09</div>
+        <div class="vol-title">私货云</div>
+        <div class="vol-梗概">阿缝深夜加班缝了一片私货云，用彩色线绣了一个歪歪扭扭的雷豆头像。雷豆不小心电了她一撮头发，打个哈欠假装无辜。伏笔。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 10 册 -->
+  <a href="volume_10.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv10">10</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 10</div>
+        <div class="vol-title">第一个代理人</div>
+        <div class="vol-梗概">灰色三件套西装男人敲门，说有人觉得那片有雷豆头像的云晃眼。站长叼着烟斗挡在门口，门上学徒守则红圈：私货云归学徒本人养，任何人无权拆。起篇结束。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 11 册 -->
+  <a href="volume_11.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv11">11</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 11</div>
+        <div class="vol-title">钉风</div>
+        <div class="vol-梗概">阿缝第一次钉风——老奶奶的帽子被歪风吹飞，她举着长长的铜大别针追上去，一针扎进风的中心，风老实了。老奶奶什么都没看见，只说这风今天挺乖的。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 12 册 -->
+  <a href="volume_12.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv12">12</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 12</div>
+        <div class="vol-title">试点区</div>
+        <div class="vol-梗概">白噪音升级：城市一个区被完美灰色方形框住，边缘齐得像尺子。区里的人穿得一样、走得一样、没有特征。阿缝站在边界上，左脚灰右脚蓝，冷和热同时存在。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 13 册 -->
+  <a href="volume_13.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv13">13</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 13</div>
+        <div class="vol-title">雷豆炸毛</div>
+        <div class="vol-梗概">雷豆在灰色区边界炸成圆球，尾巴放电烧焦小草。它不是凶，是怕——在闻白噪音的味道。远处飘来完美方形云，雷豆往地上吐了一口。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 14 册 -->
+  <a href="volume_14.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv14">14</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 14</div>
+        <div class="vol-title">账本</div>
+        <div class="vol-梗概">站长翻开旧账本给阿缝看：2008-09-01开学第一天雨，小明摔了一跤哭了，后来成了他每年都讲的故事。关键台词揭露：白噪音抹天气，其实是在抹记忆。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 15 册 -->
+  <a href="volume_15.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv15">15</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 15</div>
+        <div class="vol-title">粉色云</div>
+        <div class="vol-梗概">阿缝在灰色区边界用自己的头发当线缝了一片记忆云——出来是粉色的，她缝了四年从没缝出过粉色。粉色云飘进灰色区，人群里有个小女孩抬头看了一眼，停下，哭了。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 16 册 -->
+  <a href="volume_16.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv16">16</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 16</div>
+        <div class="vol-title">灰色云当礼物</div>
+        <div class="vol-梗概">灰色西装人第二次来，捧着一片完美方形灰云当礼物——"我们想让大家舒服点"。站长反问他：你自己记得上次觉得不舒服是什么时候吗？被抹平的人答不上来。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 17 册 -->
+  <a href="volume_17.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv17">17</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 17</div>
+        <div class="vol-title">天气暗号</div>
+        <div class="vol-梗概">阿缝把彩虹针脚缝进电线杆、垃圾桶、旧巷墙的角落。路人、流浪歌手偶然看见彩虹线，都愣了一下——那是记忆被唤起的瞬间。阿缝从被动对抗转为主动渗透。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 18 册 -->
+  <a href="volume_18.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv18">18</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 18</div>
+        <div class="vol-title">私货云没了</div>
+        <div class="vol-梗概">白噪音第一次直接反击——阿缝那片绣了雷豆头像的私货云被抹平了。雷豆尾巴完全耷拉下来，站长端着热茶没说话，只是把茶杯放下。冲突升级的起点。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 19 册 -->
+  <a href="volume_19.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv19">19</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 19</div>
+        <div class="vol-title">初恋的云</div>
+        <div class="vol-梗概">站长第一次露出脆弱——他年轻时也缝过一片云，是初恋那天的云，养了三年也被抹平了。他说：接受有些云救不回来，但下一片，还是要缝。情感低谷与传承。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 20 册 -->
+  <a href="volume_20.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv20">20</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 20</div>
+        <div class="vol-title">通过考试</div>
+        <div class="vol-梗概">学徒考试通过——站长给阿缝发第十八根正式铜别针，针尖有彩虹印记。气象站第一次白天亮灯，窗外不再是完美灰色。起篇 20 册完整闭环，承篇正式开始。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 21 册 -->
+  <a href="volume_21.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv21">21</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 21</div>
+        <div class="vol-title">开学季风云</div>
+        <div class="vol-梗概">阿缝升正式裁缝接第一个大任务——横跨三个区的开学季风云。雷豆闻出不对，发现云布料边缘被白噪音偷偷磨掉了一小块。承篇"策略交锋"的第一个信号。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 22 册 -->
+  <a href="volume_22.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv22">22</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 22</div>
+        <div class="vol-title">开学日的雨</div>
+        <div class="vol-梗概">开学日全城下雨，粉色云线索收束——第 15 册那个灰色区小女孩现在在雨里跑着笑。灰色西装人站在屋檐下盯着雨，表情复杂，好像想起了什么。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 23 册 -->
+  <a href="volume_23.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv23">23</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 23</div>
+        <div class="vol-title">精准打击</div>
+        <div class="vol-梗概">白噪音学会了"精准打击"——不再乱抹，只抹掉有记忆的天气。站长在账本上勾出危险日子：春节烟花云、中秋月晕云、清明雨云。它进化了，对抗变难。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 24 册 -->
+  <a href="volume_24.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv24">24</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 24</div>
+        <div class="vol-title">抢日子</div>
+        <div class="vol-梗概">阿缝提前一周把重要日子的云缝好藏进储藏室。雷豆在云堆里钻，尾巴放电把一片清明雨云电成炸毛样。大铜锁上有雷豆放电烧的小爪印。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 25 册 -->
+  <a href="volume_25.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv25">25</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 25</div>
+        <div class="vol-title">月晕云不见了</div>
+        <div class="vol-梗概">中秋前三天，储藏室的月晕云被偷了。锁没被撬，但架子空了。地上只有一点灰色粉屑。站长：它开始学会偷偷溜进来了。白噪音第三次策略升级。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 26 册 -->
+  <a href="volume_26.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv26">26</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 26</div>
+        <div class="vol-title">陷阱云</div>
+        <div class="vol-梗概">阿缝不再被动防守——她把雷豆掉的猫毛一根根缝进假月晕云的针脚，尾巴一放电，云就自带电触。偷的人要挨一下。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 27 册 -->
+  <a href="volume_27.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv27">27</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 27</div>
+        <div class="vol-title">陷阱炸了</div>
+        <div class="vol-梗概">陷阱云被偷走了。凌晨三点城市边缘一声闷响，灰色西装人躺在云碎片里，头发竖成鸡窝，第一次说出含混的"我好像……"。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 28 册 -->
+  <a href="volume_28.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv28">28</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 28</div>
+        <div class="vol-title">他站在门口</div>
+        <div class="vol-梗概">灰色西装人偷偷来找阿缝，脚在抖，不敢推门。阿缝递出一杯热茶，他说：我好像记得有个奶奶，但想不起她叫什么。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 29 册 -->
+  <a href="volume_29.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv29">29</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 29</div>
+        <div class="vol-title">账本里的王奶奶</div>
+        <div class="vol-梗概">账本某一页写着："王奶奶葬礼，大雨，孙子在雨里站了两个小时"。他指着那页哭了，眼泪把字晕开。雷豆蹭了蹭他的腿。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 30 册 -->
+  <a href="volume_30.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv30">30</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 30</div>
+        <div class="vol-title">他叫小王</div>
+        <div class="vol-梗概">他偷偷传来纸条：白噪音下月要抹平国庆烟花那天的云。阿缝问他的名字，他愣了很久："我想起来了……我叫小王。"</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 31 册 -->
+  <a href="volume_31.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv31">31</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 31</div>
+        <div class="vol-title">五色线</div>
+        <div class="vol-梗概">阿缝开始准备国庆云——不是缝一片，是缝一整片会"放烟花"的云。她用了红黄绿蓝紫五色线，踩踏板快得像在跑，站长路过看傻了。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 32 册 -->
+  <a href="volume_32.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv32">32</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 32</div>
+        <div class="vol-title">十个灰西装</div>
+        <div class="vol-梗概">白噪音提前动手，国庆前一天派十个灰西装人来抢云。站长第一次亮出四十年没用的生锈大剪刀，只说了一个字：滚。雷豆用电弧焊死了储藏室的门。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 33 册 -->
+  <a href="volume_33.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv33">33</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 33</div>
+        <div class="vol-title">小王反水</div>
+        <div class="vol-梗概">小王彻底倒戈——他用白噪音教他的云线，反过来缠住其他九个灰西装人的脚。那些人动不了但表情依然木然。小王朝阿缝喊：快，云不能再等了。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 34 册 -->
+  <a href="volume_34.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv34">34</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 34</div>
+        <div class="vol-title">最后一针</div>
+        <div class="vol-梗概">国庆凌晨三点，阿缝缝完最后一针。针扎破手指，一滴血落进云的红色部分，那片红比所有线都红。烟花云穿过屋顶升空，雷豆尾巴放了一串电礼花。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 35 册 -->
+  <a href="volume_35.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv35">35</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 35</div>
+        <div class="vol-title">满城烟花</div>
+        <div class="vol-梗概">国庆当天，烟花云在城市上空放了一整天的烟花。大街上的人都抬头看，手机刷爆。白噪音站在最高的云端，身体边缘第一次发抖：为什么……他们在笑？</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 36 册 -->
+  <a href="volume_36.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv36">36</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 36</div>
+        <div class="vol-title">抹了三次</div>
+        <div class="vol-梗概">白噪音对着一小片雨云抹了三次，雨云还在滴水。它第一次发现抹平不管用了，也是第一次问：为什么非要记得？</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 37 册 -->
+  <a href="volume_37.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv37">37</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 37</div>
+        <div class="vol-title">楼顶的回答</div>
+        <div class="vol-梗概">阿缝站上城市最高的楼顶把它喊下来，第一次直接对话。她讲奶奶婚礼那场大雨——那天白裙子全湿了，她笑得最大声。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 38 册 -->
+  <a href="volume_38.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv38">38</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 38</div>
+        <div class="vol-title">舒服不算活着</div>
+        <div class="vol-梗概">白噪音说这样大家都舒服啊。阿缝只回了一句：舒服不代表活着。白噪音沉默很久，灰云边缘裂开一道缝，飘走了。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 39 册 -->
+  <a href="volume_39.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv39">39</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 39</div>
+        <div class="vol-title">它要一口吃掉</div>
+        <div class="vol-梗概">小王穿着运动服跑来报信：它要把整座城市的天空都抹平，不是一个区，是全部。地图上被灰色涂得没有一处留白。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 40 册 -->
+  <a href="volume_40.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv40">40</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 40</div>
+        <div class="vol-title">战备</div>
+        <div class="vol-梗概">所有裁缝被召回，储藏室的云全搬出来加固。守则被撕掉一半，露出站长年轻时写的字：缝的是没被记住的日子。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 41 册 -->
+  <a href="volume_41.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv41">41</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 41</div>
+        <div class="vol-title">大抹除</div>
+        <div class="vol-梗概">一夜之间，半座城的天被切成完美平灰，界线直得像用尺子画的。阿缝站在界线上，一只脚在灰里，一只脚在蓝里。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 42 册 -->
+  <a href="volume_42.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv42">42</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 42</div>
+        <div class="vol-title">违规</div>
+        <div class="vol-梗概">阿缝违反规矩，把储藏室的云全放出来，一片片缝成一整片彩虹云。站长递线：规矩是学徒的，你现在是师傅了。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 43 册 -->
+  <a href="volume_43.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv43">43</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 43</div>
+        <div class="vol-title">彩虹云</div>
+        <div class="vol-梗概">彩虹云拼成了，却薄得能看见后面的灰。雷豆跳上云背放电，把云电得鼓起来，也只厚了一点点。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 44 册 -->
+  <a href="volume_44.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv44">44</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 44</div>
+        <div class="vol-title">压过来</div>
+        <div class="vol-梗概">灰天像墙一样往蓝边推，彩虹云被压得变形、针脚崩开。街上的人齐齐抬头，小王举着纸板：我记得我奶奶。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 45 册 -->
+  <a href="volume_45.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv45">45</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 45</div>
+        <div class="vol-title">当缝线</div>
+        <div class="vol-梗概">阿缝把头发里的四年记忆当线，自己走进彩虹云里。云骤然变厚变亮，光漏下来，街上所有人都抬起了头。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 46 册 -->
+  <a href="volume_46.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv46">46</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 46</div>
+        <div class="vol-title">云里三天</div>
+        <div class="vol-梗概">阿缝在云里拔发当线，缝了三天。云壁上浮出三段记忆补丁；云外，雷豆守着云沿，流着泪放电。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 47 册 -->
+  <a href="volume_47.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv47">47</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 47</div>
+        <div class="vol-title">退一步</div>
+        <div class="vol-梗概">灰天裂出一道缺口，白噪音往后退了一步——它不是被打败，是看不懂这个拿自己当线的人。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 48 册 -->
+  <a href="volume_48.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv48">48</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 48</div>
+        <div class="vol-title">代价</div>
+        <div class="vol-梗概">阿缝成把地掉发，站里的铜气压表指针乱跳、裂了玻璃。站长只说了四个字：表跟人走了。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 49 册 -->
+  <a href="volume_49.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv49">49</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 49</div>
+        <div class="vol-title">师傅接针</div>
+        <div class="vol-梗概">站长爬上云沿把阿缝拽下来，用自己的白发接住黑发的线头。不是赢了，是换一个人接着耗。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 50 册 -->
+  <a href="volume_50.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv50">50</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 50</div>
+        <div class="vol-title">躺一周</div>
+        <div class="vol-梗概">阿缝半白半黑，躺了一周。雷豆趴在她胸口放电取暖，小王把饭送到门口：是热的。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 51 册 -->
+  <a href="volume_51.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv51">51</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 51</div>
+        <div class="vol-title">站长倒下</div>
+        <div class="vol-梗概">站长缝到一半晕过去，针还攥在手里。老缝纫机自己响了几下，停了。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 52 册 -->
+  <a href="volume_52.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv52">52</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 52</div>
+        <div class="vol-title">接手</div>
+        <div class="vol-梗概">阿缝搬来站长的老机器，摸到刻字：针脚缝的不是云。雷豆踩了一脚踏板。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 53 册 -->
+  <a href="volume_53.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv53">53</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 53</div>
+        <div class="vol-title">缝不过来</div>
+        <div class="vol-梗概">云边透明，储藏室空了。小王拎着空布袋站在门口：我帮你。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 54 册 -->
+  <a href="volume_54.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv54">54</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 54</div>
+        <div class="vol-title">捡旧东西</div>
+        <div class="vol-梗概">旧相册、半张电影票、掉页日记——城市丢掉的东西，纸上还有记忆。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 55 册 -->
+  <a href="volume_55.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv55">55</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 55</div>
+        <div class="vol-title">把纸缝进去</div>
+        <div class="vol-梗概">彩纸叠进云，云厚了一点；日期浮出来，云角下起一场旧雨。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 56 册 -->
+  <a href="volume_56.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv56">56</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 56</div>
+        <div class="vol-title">灰色的裂缝</div>
+        <div class="vol-梗概">白噪音的方形云边裂了。它说自己好像也忘了什么，阿缝只回了它一句。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 57 册 -->
+  <a href="volume_57.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv57">57</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 57</div>
+        <div class="vol-title">回来的人</div>
+        <div class="vol-梗概">退休的老裁缝抱着自家机器回来，缝纫机响成一片——回来的都是快踩不动的人。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 58 册 -->
+  <a href="volume_58.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv58">58</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 58</div>
+        <div class="vol-title">一撮毛</div>
+        <div class="vol-梗概">雷豆消失了。枕边只剩一撮尾巴毛，饭没动，水没少，地板上留着一圈焦痕。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 59 册 -->
+  <a href="volume_59.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv59">59</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 59</div>
+        <div class="vol-title">下山</div>
+        <div class="vol-梗概">她第一次下山，在雨里喊雷豆的名字；路人看她，像看一个疯丫头。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 60 册 -->
+  <a href="volume_60.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv60">60</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 60</div>
+        <div class="vol-title">工厂里的灰</div>
+        <div class="vol-梗概">废弃工厂里，雷豆的尾巴搭在那团灰色毛球上。两条短尾的形状几乎一样。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 61 册 -->
+  <a href="volume_61.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv61">61</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 61</div>
+        <div class="vol-title">气象站的猫</div>
+        <div class="vol-梗概">两条短尾并排，形状几乎一样。它第一次问：我是什么。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 62 册 -->
+  <a href="volume_62.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv62">62</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 62</div>
+        <div class="vol-title">叫你灰豆</div>
+        <div class="vol-梗概">指尖落在灰毛上。它第一次用猫的声音，把名字念了一遍。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 63 册 -->
+  <a href="volume_63.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv63">63</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 63</div>
+        <div class="vol-title">散开</div>
+        <div class="vol-梗概">方形云一片片碎掉，灰毛退成灰白。小王想起了奶奶的猫。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 64 册 -->
+  <a href="volume_64.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv64">64</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 64</div>
+        <div class="vol-title">惯性</div>
+        <div class="vol-梗概">它醒了，可它做过的事没停。天空正一寸一寸变回灰色。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 65 册 -->
+  <a href="volume_65.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv65">65</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 65</div>
+        <div class="vol-title">缝一个故事</div>
+        <div class="vol-梗概">她不报仇。她把一只猫想要尾巴的故事，缝进云里。转篇结束。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 66 册 -->
+  <a href="volume_66.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv66">66</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 66</div>
+        <div class="vol-title">一片一片</div>
+        <div class="vol-梗概">全员出动补天。针下有只没尾巴的小猫，灰豆第一次帮忙叼线头。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 67 册 -->
+  <a href="volume_67.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv67">67</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 67</div>
+        <div class="vol-title">还差一半</div>
+        <div class="vol-梗概">补了三天三夜才一半。鬓角的白往上长，小王问还有没有别的办法。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 68 册 -->
+  <a href="volume_68.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv68">68</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 68</div>
+        <div class="vol-title">缝人</div>
+        <div class="vol-梗概">不缝云了，把人的私人记忆缝进头顶那片云。第一片是一只蝴蝶。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 69 册 -->
+  <a href="volume_69.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv69">69</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 69</div>
+        <div class="vol-title">抬头</div>
+        <div class="vol-梗概">老师、护士、小孩各自抬头，记起一点只属于自己的事。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 70 册 -->
+  <a href="volume_70.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv70">70</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 70</div>
+        <div class="vol-title">缩手</div>
+        <div class="vol-梗概">每片云都不一样了。灰影伸出手，在离云一寸处缩了回去。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 71 册 -->
+  <a href="volume_71.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv71">71</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 71</div>
+        <div class="vol-title">根云</div>
+        <div class="vol-梗概">站长把全部白发缝进根云。云里浮出每一代的脸，他坐进藤椅，睡着了。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 72 册 -->
+  <a href="volume_72.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv72">72</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 72</div>
+        <div class="vol-title">新屋顶</div>
+        <div class="vol-梗概">根云铺成圆屋顶，云里全是名字。雷豆跳上去，短尾一炸，名字就亮了。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 73 册 -->
+  <a href="volume_73.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv73">73</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 73</div>
+        <div class="vol-title">问彩虹</div>
+        <div class="vol-梗概">她要缝一整片彩虹，于是去问每个人：你见过最美的彩虹是什么时候。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 74 册 -->
+  <a href="volume_74.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv74">74</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 74</div>
+        <div class="vol-title">一夜</div>
+        <div class="vol-梗概">纸条、短毛、灰絮、一根白头发，全缝进同一道针脚。踏板踩到天亮。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 75 册 -->
+  <a href="volume_75.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv75">75</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 75</div>
+        <div class="vol-title">起来</div>
+        <div class="vol-梗概">彩虹云横过整座城市。每个人抬头，都认得出属于自己的那一道颜色。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 76 册 -->
+  <a href="volume_76.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv76">76</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 76</div>
+        <div class="vol-title">缩手</div>
+        <div class="vol-梗概">灰团伸向彩虹，又缩回来。它记起自己也曾是一只猫。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 77 册 -->
+  <a href="volume_77.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv77">77</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 77</div>
+        <div class="vol-title">第七色</div>
+        <div class="vol-梗概">彩虹最外层多了一道不齐的灰，毛躁得像猫尾巴扫过。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 78 册 -->
+  <a href="volume_78.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv78">78</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 78</div>
+        <div class="vol-title">雨后</div>
+        <div class="vol-梗概">天空恢复日常。有人躲雨，有人不躲，有人只是抬头看。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 79 册 -->
+  <a href="volume_79.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv79">79</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 79</div>
+        <div class="vol-title">守云人</div>
+        <div class="vol-梗概">老藤椅有人坐了，守则多说一句，猫在窗台晒太阳。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- 第 80 册 -->
+  <a href="volume_80.html" class="volume-card">
+    <div class="card-inner">
+      <div class="cover-block cv80">80</div>
+      <div class="vol-info">
+        <div class="vol-num">VOLUME · 80</div>
+        <div class="vol-title">新针脚</div>
+        <div class="vol-梗概">十六岁女孩循着云里的灯找上山，问能不能缝一片自己的云。</div>
+      </div>
+      <div class="vol-arrow">→</div>
+    </div>
+  </a>
+
+  <div class="footer">
+    <hr>
+    全 80 册完<br><br>
+    原创 IP · 暂不对外授权<br>
+    2026.11
+  </div>
+
+</div>
+</body>
+</html>
