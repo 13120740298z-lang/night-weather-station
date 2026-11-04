@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#07131d">
+<title>夜班气象站 · 3D 翻书阅读器</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="assets/reader.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <h1>夜班气象站</h1>
+      <p>通读导读 · 全 166 页</p>
+    </div>
+  </header>
+
+  <main id="stage" aria-label="翻书区域">
+    <div id="bookShadow" class="book-shadow" aria-hidden="true"></div>
+    <div id="book"></div>
+    <div id="spine" class="spine" aria-hidden="true"></div>
+    <div id="edgeLeft" class="edge edge-left" aria-hidden="true"></div>
+    <div id="edgeRight" class="edge edge-right" aria-hidden="true"></div>
+    <div id="hint" class="hint">左右滑动翻页 · 点按页面两侧也行</div>
+  </main>
+
+  <footer class="hud">
+    <div class="hud-main">
+      <button id="btnPrev" class="nav-btn" aria-label="上一页">‹</button>
+      <div class="track">
+        <input id="slider" type="range" min="1" max="166" value="1" step="1" aria-label="阅读进度">
+      </div>
+      <button id="btnNext" class="nav-btn" aria-label="下一页">›</button>
+    </div>
+    <div class="hud-sub">
+      <span id="pageLabel" class="page-label">1 / 166</span>
+      <div class="jump">
+        <label for="jumpInput">跳至</label>
+        <input id="jumpInput" type="number" min="1" max="166" inputmode="numeric" placeholder="页码" aria-label="跳转到页码">
+        <button id="btnJump" aria-label="跳转">去</button>
+      </div>
+      <span class="tip">拖动滑杆也可跳页</span>
+    </div>
+  </footer>
+</div>
+
+<div id="boot" class="boot">
+  <div class="boot-inner">
+    <p class="boot-title">夜班气象站</p>
+    <p class="boot-sub">正在装订书页…</p>
+    <div class="boot-bar"><span></span></div>
+  </div>
+</div>
+
+<script src="vendor/page-flip.browser.js"></script>
+<script src="assets/reader.js"></script>
+</body>
+</html>
