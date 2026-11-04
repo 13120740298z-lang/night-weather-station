@@ -1,7 +1,9 @@
 (() => {
   'use strict';
 
-  const TOTAL = 166;
+  const MANIFEST_URL = 'pages_v4/manifest.json';
+  let TOTAL = 0;
+  let files = [];
   const WINDOW_BACK = 2;
   const WINDOW_AHEAD = 3;
   const UNLOAD_DISTANCE = 7;
@@ -21,18 +23,15 @@
   const btnNext = document.getElementById('btnNext');
   const btnJump = document.getElementById('btnJump');
 
-  const pad = (n) => String(n).padStart(3, '0');
-  const pageUrl = (i) => `pages/page_${pad(i)}.jpg`;
+  const pageUrl = (i) => `pages_v4/${files[i - 1]}`;
 
-  const imgs = new Array(TOTAL).fill(null);
+  const imgs = [];
   let pageFlip = null;
   let current = 0;
   let flipping = false;
   let unloadTimer = 0;
   let started = false;
-
-  const coverPreload = new Image();
-  coverPreload.src = pageUrl(1);
+  let coverPreload = null;
 
   function buildPages() {
     const frag = document.createDocumentFragment();
@@ -263,7 +262,7 @@
     pageFlip.loadFromHTML(Array.from(bookEl.querySelectorAll('.page')));
     window.__reader = {
       get pageFlip() { return pageFlip; },
-      total: TOTAL,
+      get total() { return TOTAL; },
       get current() { return current; },
       get ready() { return pageFlip !== null; }
     };
@@ -360,14 +359,51 @@
 
   /* ---------- 启动 ---------- */
 
-  buildPages();
+  // 页序完全由 pages_v4/manifest.json 决定：按 page 升序取 file，
+  // 并校验页码连续、文件名唯一、总数与 manifest 声明一致。
+  async function loadManifest() {
+    const res = await fetch(MANIFEST_URL, { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`manifest ${res.status}`);
+    const data = await res.json();
+    const entries = Array.isArray(data.pages) ? data.pages.slice() : [];
+    entries.sort((a, b) => a.page - b.page);
 
-  const start = () => init();
-  if (coverPreload.complete && coverPreload.naturalWidth > 0) {
-    start();
-  } else {
-    coverPreload.addEventListener('load', start);
-    coverPreload.addEventListener('error', start);
-    setTimeout(start, 2500);
+    if (!entries.length) throw new Error('manifest.pages 为空');
+    entries.forEach((e, i) => {
+      if (e.page !== i + 1) throw new Error(`页码不连续：第 ${i + 1} 项是 P.${e.page}`);
+      if (typeof e.file !== 'string' || !e.file) throw new Error(`P.${e.page} 缺 file`);
+    });
+    const names = entries.map((e) => e.file);
+    if (new Set(names).size !== names.length) throw new Error('manifest 存在重复文件');
+
+    files = names;
+    TOTAL = entries.length;
+    if (Number(data.page_count) && Number(data.page_count) !== TOTAL) {
+      throw new Error(`page_count ${data.page_count} 与实际 ${TOTAL} 不符`);
+    }
+    return TOTAL;
   }
+
+  function boot() {
+    loadManifest()
+      .then(() => {
+        buildPages();
+        coverPreload = new Image();
+        coverPreload.src = pageUrl(1);
+        const start = () => init();
+        if (coverPreload.complete && coverPreload.naturalWidth > 0) {
+          start();
+        } else {
+          coverPreload.addEventListener('load', start);
+          coverPreload.addEventListener('error', start);
+          setTimeout(start, 2500);
+        }
+      })
+      .catch((err) => {
+        bootEl.querySelector('.boot-sub').textContent = `页图清单加载失败：${err.message}`;
+        console.error('[reader] manifest', err);
+      });
+  }
+
+  boot();
 })();
