@@ -3,54 +3,230 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#07131d">
-<title>夜班气象站 · 3D 翻书阅读器</title>
+<meta name="theme-color" content="#070c12">
+<meta name="format-detection" content="telephone=no">
+<title>夜班气象站 · 漫画阅读器</title>
 <link rel="icon" href="data:,">
+<link rel="preload" as="image" href="pages_m/page_001.webp" media="(max-width:900px)" fetchpriority="high">
+<link rel="preload" as="image" href="pages_m/page_002.webp" media="(max-width:900px)" fetchpriority="high">
+<link rel="preload" as="image" href="pages_m/page_003.webp" media="(max-width:900px)" fetchpriority="high">
+<link rel="preload" as="image" href="pages_d/page_001.webp" media="(min-width:901px)" fetchpriority="high">
+<link rel="preload" as="image" href="pages_d/page_002.webp" media="(min-width:901px)" fetchpriority="high">
+<link rel="preload" as="image" href="pages_d/page_003.webp" media="(min-width:901px)" fetchpriority="high">
 <link rel="stylesheet" href="assets/reader.css">
 </head>
 <body>
-<div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <h1>夜班气象站</h1>
-      <p>通读导读 · 全 166 页</p>
-    </div>
-  </header>
+<div id="app" data-mode="single" class="chrome-on">
 
-  <main id="stage" aria-label="翻书区域">
-    <div id="bookShadow" class="book-shadow" aria-hidden="true"></div>
-    <div id="book"></div>
-    <div id="spine" class="spine" aria-hidden="true"></div>
-    <div id="edgeLeft" class="edge edge-left" aria-hidden="true"></div>
-    <div id="edgeRight" class="edge edge-right" aria-hidden="true"></div>
-    <div id="hint" class="hint">左右滑动翻页 · 点按页面两侧也行</div>
+  <!-- 阅读舞台 -->
+  <main id="stage" aria-label="漫画阅读区">
+
+    <!-- 1. 翻书：双页 / 手机单页翻页动画 -->
+    <section class="view view-flip" id="viewFlip" aria-label="翻书模式">
+      <div class="flip-wrap" id="flipWrap">
+        <div id="book"></div>
+      </div>
+    </section>
+
+    <!-- 2. 单页竖屏 -->
+    <section class="view view-single" id="viewSingle" aria-label="单页模式">
+      <div class="single-zoom" id="singleZoom">
+        <div class="single-card" id="singleCard">
+          <img id="singleImg" alt="" draggable="false">
+          <div class="page-skeleton" id="singleSkeleton"><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 竖滚 webtoon -->
+    <section class="view view-scroll" id="viewScroll" aria-label="竖滚模式">
+      <div class="wt-list" id="scrollList"></div>
+    </section>
+
+    <!-- 4. 文字模式 -->
+    <section class="view view-text" id="viewText" aria-label="文字模式">
+      <div class="text-shell" id="textShell">
+        <div class="text-tools" id="textTools">
+          <button class="tool-btn" id="btnTextPrevVol" aria-label="上一册">上册</button>
+          <span class="text-volno" id="textVolNo">第 1 册</span>
+          <button class="tool-btn" id="btnTextNextVol" aria-label="下一册">下册</button>
+          <span class="tools-gap"></span>
+          <button class="tool-btn" id="btnFontMinus" aria-label="减小字号">A−</button>
+          <button class="tool-btn" id="btnFontPlus" aria-label="增大字号">A＋</button>
+          <button class="tool-btn" id="btnTextSettings" aria-label="文字设置">设置</button>
+        </div>
+        <article class="text-body" id="textBody"></article>
+      </div>
+    </section>
+
+    <div class="zoom-chip" id="zoomChip" hidden>
+      <button id="btnZoomReset" aria-label="复位缩放"><span id="zoomVal">1.0×</span> · 复位</button>
+    </div>
+
+    <div class="hint-toast" id="gestureHint">双指捏合放大 · 双击放大/复位</div>
   </main>
 
-  <footer class="hud">
-    <div class="hud-main">
-      <button id="btnPrev" class="nav-btn" aria-label="上一页">‹</button>
-      <div class="track">
-        <input id="slider" type="range" min="1" max="166" value="1" step="1" aria-label="阅读进度">
-      </div>
-      <button id="btnNext" class="nav-btn" aria-label="下一页">›</button>
+  <!-- 顶栏 -->
+  <header class="topbar" id="topbar">
+    <button class="icon-btn" id="btnToc" aria-label="打开目录" aria-expanded="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 12h16M4 18h13"/></svg>
+    </button>
+    <div class="title-block">
+      <h1>夜班气象站</h1>
+      <p id="volLabel">正在展卷…</p>
     </div>
-    <div class="hud-sub">
-      <span id="pageLabel" class="page-label">1 / 166</span>
-      <div class="jump">
-        <label for="jumpInput">跳至</label>
-        <input id="jumpInput" type="number" min="1" max="166" inputmode="numeric" placeholder="页码" aria-label="跳转到页码">
-        <button id="btnJump" aria-label="跳转">去</button>
+    <button class="icon-btn" id="btnFull" aria-label="全屏">
+      <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-expand"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-collapse"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+    </button>
+    <button class="icon-btn" id="btnSettings" aria-label="设置">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8L5.6 18.4"/></svg>
+    </button>
+  </header>
+
+  <!-- 底栏 -->
+  <footer class="dock" id="dock">
+    <div class="mode-tabs" role="tablist" aria-label="阅读模式">
+      <button role="tab" data-mode="flip" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5c-2-1.3-4.6-2-7.5-2v13c2.9 0 5.5.7 7.5 2 2-1.3 4.6-2 7.5-2v-13c-2.9 0-5.5.7-7.5 2zM12 5.5v13"/></svg>
+        <span>翻书</span>
+      </button>
+      <button role="tab" data-mode="single" aria-selected="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3.5" width="12" height="17" rx="1.4"/><path d="M9.5 17.5h5"/></svg>
+        <span>单页</span>
+      </button>
+      <button role="tab" data-mode="scroll" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v13M8 13.5l4 4 4-4M6 21h12"/></svg>
+        <span>竖滚</span>
+      </button>
+      <button role="tab" data-mode="text" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 11h16M4 16h10M4 21h7"/></svg>
+        <span>文字</span>
+      </button>
+    </div>
+
+    <div class="progress-row">
+      <input id="slider" type="range" min="1" max="166" value="1" step="1" aria-label="阅读进度滑杆">
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" id="btnPrev" aria-label="上一页">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5L8 12l7 7"/></svg>
+      </button>
+      <div class="page-meta">
+        <strong id="pageLabel">P.1</strong>
+        <span id="pageTotal">/ 166</span>
+        <em id="pageVol">封面</em>
       </div>
-      <span class="tip">拖动滑杆也可跳页</span>
+      <button class="nav-btn" id="btnNext" aria-label="下一页">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
     </div>
   </footer>
-</div>
 
-<div id="boot" class="boot">
-  <div class="boot-inner">
-    <p class="boot-title">夜班气象站</p>
-    <p class="boot-sub">正在装订书页…</p>
-    <div class="boot-bar"><span></span></div>
+  <!-- 目录抽屉 -->
+  <div class="drawer-mask" id="drawerMask" hidden></div>
+  <aside class="drawer" id="tocDrawer" aria-label="章节目录" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <h2>目录</h2>
+        <p>导读 · 总目录 · 全 80 册</p>
+      </div>
+      <button class="icon-btn" id="btnTocClose" aria-label="关闭目录">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body" id="tocList">
+      <div class="toc-loading">目录加载中…</div>
+    </div>
+    <div class="drawer-foot">
+      <span id="tocNow">P.1 · 封面</span>
+      <button id="btnResume" class="resume-btn" hidden>续读</button>
+    </div>
+  </aside>
+
+  <!-- 设置面板 -->
+  <div class="sheet-mask" id="sheetMask" hidden></div>
+  <section class="sheet" id="sheet" aria-label="阅读设置" aria-hidden="true">
+    <div class="sheet-grip"></div>
+    <div class="sheet-head">
+      <h2>阅读设置</h2>
+      <button class="icon-btn" id="btnSheetClose" aria-label="关闭设置">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="sheet-scroll">
+      <div class="set-group">
+        <h3>画质档位</h3>
+        <div class="seg" id="segTier">
+          <button data-tier="m">省流 · 1000px</button>
+          <button data-tier="d">高清 · 1600px</button>
+        </div>
+        <p class="set-note" id="tierNote">手机档单页约 170 KB，桌面档约 440 KB。切换后会重新装载当前页。</p>
+      </div>
+
+      <div class="set-group">
+        <h3>文字排版</h3>
+        <div class="set-line">
+          <span class="set-label">字号</span>
+          <div class="stepper">
+            <button id="btnSetFontMinus" aria-label="减小字号">A−</button>
+            <b id="setFontVal">18</b>
+            <button id="btnSetFontPlus" aria-label="增大字号">A＋</button>
+          </div>
+        </div>
+        <div class="set-line">
+          <span class="set-label">行距</span>
+          <div class="seg seg-sm" id="segLeading">
+            <button data-lh="1.55">紧凑</button>
+            <button data-lh="1.8">标准</button>
+            <button data-lh="2.1">宽松</button>
+          </div>
+        </div>
+        <div class="set-line">
+          <span class="set-label">背景</span>
+          <div class="seg seg-sm" id="segBg">
+            <button data-bg="paper">纸色</button>
+            <button data-bg="green">护眼绿</button>
+            <button data-bg="night">夜间黑</button>
+          </div>
+        </div>
+        <div class="set-line">
+          <span class="set-label">字重</span>
+          <div class="seg seg-sm" id="segWeight">
+            <button data-fw="400">常规</button>
+            <button data-fw="600">加粗</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <h3>操作</h3>
+        <div class="set-actions">
+          <button class="wide-btn" id="btnZoomReset2">复位缩放</button>
+          <button class="wide-btn" id="btnFull2">全屏 / 沉浸</button>
+        </div>
+        <ul class="gesture-list">
+          <li><b>双指捏合</b> 放大 2–4 倍，单指拖动查看；放大时不会误翻页。</li>
+          <li><b>双击</b> 在点按处放大，再双击复位。</li>
+          <li><b>滑动</b> 左右滑或点按页面两侧翻页；全屏下轻点显示/隐藏工具栏。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="boot" id="boot">
+    <div class="boot-inner">
+      <div class="boot-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><path d="M10 22c8-7 17-9 25-5 8 3 13 9 19 15"/><path d="M14 34c7-6 15-8 22-4 6 2 10 6 15 12"/><path d="M9 46c7-4 13-5 19-2 6 2 10 5 15 9"/></svg>
+      </div>
+      <p class="boot-title">夜班气象站</p>
+      <p class="boot-sub" id="bootSub">正在展卷</p>
+      <div class="boot-bar"><span id="bootBar"></span></div>
+    </div>
   </div>
 </div>
 
