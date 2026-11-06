@@ -6,8 +6,8 @@
  "format": "webp",
  "page_count": 166,
  "source": "pages_v4 (1600px JPEG q80)",
- "generated_at": "2026-11-05T18:17:36+0800",
- "total_bytes": 28903290,
+ "generated_at": "2026-11-07T01:25:22+0800",
+ "total_bytes": 28812312,
  "pages": [
   {
    "page": 1,
@@ -964,14 +964,14 @@
   {
    "page": 137,
    "file": "page_137.webp",
-   "bytes": 207002,
+   "bytes": 212324,
    "w": 1000,
    "h": 1414
   },
   {
    "page": 138,
    "file": "page_138.webp",
-   "bytes": 191306,
+   "bytes": 196462,
    "w": 1000,
    "h": 1414
   },
@@ -985,28 +985,28 @@
   {
    "page": 140,
    "file": "page_140.webp",
-   "bytes": 232574,
+   "bytes": 222474,
    "w": 1000,
    "h": 1414
   },
   {
    "page": 141,
    "file": "page_141.webp",
-   "bytes": 210264,
+   "bytes": 188646,
    "w": 1000,
    "h": 1414
   },
   {
    "page": 142,
    "file": "page_142.webp",
-   "bytes": 274458,
+   "bytes": 258326,
    "w": 1000,
    "h": 1414
   },
   {
    "page": 143,
    "file": "page_143.webp",
-   "bytes": 240570,
+   "bytes": 223368,
    "w": 1000,
    "h": 1414
   },
@@ -1034,7 +1034,7 @@
   {
    "page": 147,
    "file": "page_147.webp",
-   "bytes": 268062,
+   "bytes": 256596,
    "w": 1000,
    "h": 1414
   },
@@ -1048,7 +1048,7 @@
   {
    "page": 149,
    "file": "page_149.webp",
-   "bytes": 234414,
+   "bytes": 230512,
    "w": 1000,
    "h": 1414
   },
@@ -1069,14 +1069,14 @@
   {
    "page": 152,
    "file": "page_152.webp",
-   "bytes": 224558,
+   "bytes": 210572,
    "w": 1000,
    "h": 1414
   },
   {
    "page": 153,
    "file": "page_153.webp",
-   "bytes": 212152,
+   "bytes": 201376,
    "w": 1000,
    "h": 1414
   },
@@ -1160,7 +1160,7 @@
   {
    "page": 165,
    "file": "page_165.webp",
-   "bytes": 196676,
+   "bytes": 200402,
    "w": 1000,
    "h": 1414
   },
